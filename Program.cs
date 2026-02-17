@@ -8,8 +8,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 //builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite("Data Source=app.db"));
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
+builder.Services.AddDbContext<AppDbContext>(options => 
+            options.UseNpgsql(
+                builder.Configuration.GetConnectionString("DefaultConnection")
+));
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
