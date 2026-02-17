@@ -1,0 +1,26 @@
+@model OrganizarTerritorios.Models.Usuario
+<div class="modal-header">
+    <h5 class="modal-title" id="modalNovoTerritorioLabel">Editar Território</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<form method="post" asp-page-handler="Edit" enctype="multipart/form-data">
+    <input type="hidden" name="Id" value="@Model.Id" />
+    <div class="modal-body">
+        <div class="mb-3">
+            <label class="form-label">Email:</label>
+            <input name="Email" class="form-control" value="@Model.Email" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Senha atual:</label>
+            <input name="senhaAtual" class="form-control" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Nova Senha:</label>
+            <input name="SenhaHash" class="form-control" />
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+    </div>
+</form>

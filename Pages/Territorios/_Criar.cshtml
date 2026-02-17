@@ -1,0 +1,21 @@
+@model OrganizarTerritorios.Pages.Territorios.AdministracaoTerritoriosModel
+<form method="post" asp-page-handler="Add" enctype="multipart/form-data">
+    <div class="modal-body">
+        <div class="mb-3">
+            <label class="form-label">Nome:</label>
+            <input name="nome" class="form-control" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Imagem:</label>
+            <input type="file" name="imagem" class="form-control" accept="image/*" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Total de Quadras:</label>
+            <input name="quantidadeQuadras" type="number" class="form-control" />
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Salvar</button>
+    </div>
+</form>

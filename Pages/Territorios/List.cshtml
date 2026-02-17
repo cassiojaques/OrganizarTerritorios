@@ -1,0 +1,96 @@
+﻿@page
+@model OrganizarTerritorios.Pages.Territorios.TerritoriosModel
+@{
+    ViewData["Title"] = "Territórios";
+}
+
+<h2 class="mb-4">Territórios</h2>
+<div class="row">
+    @foreach (var territorio in Model.Territorios)
+    {
+        <div class="col-md-3 mb-3">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <img src="@territorio.UrlImagem" alt="Miniatura do território"
+                         class="img-fluid rounded mb-2"
+                         style="max-height: 90px; object-fit: contain; background: #f8f9fa;">
+                    <h5 class="card-title">@territorio.Nome</h5>
+                    <button class="btn btn-primary btn-sm mt-1"
+                            hx-get='@Url.Page("/Territorios/List", "DetalhesPartial", new { id = territorio.Id })'
+                            hx-target="#modalContent"
+                            hx-trigger="click"
+                            data-bs-toggle="modal"
+                            data-bs-target="#modalTerritorio">
+                        Ver Detalhes
+                    </button>   
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalTerritorio" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+  <div class="modal-dialog">    
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalLabel">Detalhes do Território</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div id="modalContent">
+          <!-- Conteúdo dinâmico via AJAX -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+        <button type="button" class="btn btn-success" id="btnSalvarQuadras">Salvar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    const modal = document.getElementById('modalTerritorio');
+
+    document.getElementById('btnSalvarQuadras').onclick = function () {
+        let territorioIdSelecionado = document.getElementById("IdTerritorio").value;
+        const checkboxes = document.querySelectorAll('#modalContent input[type=checkbox]');
+        const quadrasFeitas = Array.from(checkboxes)
+            .filter(cb => cb.checked)
+            .map(cb => parseInt(cb.value))
+            .filter(q => !isNaN(q));
+
+        const payload = {
+            territorioId: territorioIdSelecionado,
+            quadrasFeitas: quadrasFeitas
+        };
+
+        console.log("JSON enviado:", payload);
+
+        const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+
+        fetch('@Url.Page("/Territorios/List", "AtualizarQuadras")', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'RequestVerificationToken': token
+            },
+            body: JSON.stringify(payload)
+        })
+        .then(resp => {
+            if (!resp.ok) {
+                throw new Error("Erro HTTP " + resp.status);
+            }
+            return resp.json();
+        })
+        .then(data => {
+            if (data.success) {
+                bootstrap.Modal.getInstance(modal).hide();
+            }
+        })
+        .catch(err => console.error(err));
+    };
+
+
+</script>

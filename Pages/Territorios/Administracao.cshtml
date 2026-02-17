@@ -1,0 +1,92 @@
+﻿@page
+@model OrganizarTerritorios.Pages.Territorios.AdministracaoTerritoriosModel
+@{
+    ViewData["Title"] = "ADM Territórios";
+}
+
+
+
+<h2 class="mb-4">Administrar Territórios</h2>
+
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#criarTerritorioModal">
+    Adicionar Território
+</button>
+
+<!-- Modal Novo Território -->
+<div class="modal fade" id="criarTerritorioModal" tabindex="-1" aria-labelledby="modalNovoTerritorioLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalNovoTerritorioLabel">Adicionar Território</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      @await Html.PartialAsync("_Criar", Model)
+    </div>
+  </div>
+</div>
+
+<!-- Modal Editar Território -->
+<div class="modal fade" id="editarTerritorioModal" tabindex="-1" aria-labelledby="modalEditarTerritorioLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- O conteúdo será carregado via HTMX -->
+        </div>
+    </div>
+</div>
+    
+<hr />
+
+<!-- Modal de Confirmação de Exclusão -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Conteúdo será carregado via HTMX -->
+        </div>
+    </div>
+</div>
+    
+<h3 class="mb-3">Lista de Territórios</h3>      
+<div class="table-responsive">
+    <table class="table table-striped table-bordered">
+        <thead class="table-light">
+            <tr>        
+                <th>Id</th>
+                <th>Nome</th>
+                <th>Imagem</th>
+                <th>Quantidade de Quadras</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var territorio in Model.Territorios)
+            {
+                <tr>
+                    <td>@territorio.Id</td>
+                    <td>@territorio.Nome</td>
+                    <td>@territorio.UrlImagem</td>
+                    <td>@territorio.QuantidadeQuadras</td>
+                    <td>
+                        <a class="btn btn-warning btn-sm me-1"
+                           hx-get="@Url.Page("Administracao", "Edit", new { id = territorio.Id })"
+                           hx-target="#editarTerritorioModal .modal-content"
+                           hx-swap="innerHTML"
+                           hx-trigger="click"
+                           data-bs-toggle="modal"
+                           data-bs-target="#editarTerritorioModal">
+                           Editar
+                        </a>
+                        <a class="btn btn-danger btn-sm me-1"
+                           hx-get="@Url.Page("Administracao", "Delete", new { id = territorio.Id })"
+                           hx-target="#confirmDeleteModal .modal-content"
+                           hx-swap="innerHTML"
+                           hx-trigger="click"
+                           data-bs-toggle="modal"
+                           data-bs-target="#confirmDeleteModal">
+                            Excluir
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

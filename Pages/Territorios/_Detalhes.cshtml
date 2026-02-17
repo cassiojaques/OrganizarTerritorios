@@ -1,0 +1,40 @@
+@model OrganizarTerritorios.Models.Territorio
+@{
+    Layout = null;
+}
+
+<div>
+    <input type="hidden" name="Id" id="IdTerritorio" value="@Model.Id" />
+    <div style="overflow: hidden; width: 100%; /* max-width: 400px; */">
+        <img id="zoomImg" src="@Model.UrlImagem" class="img-fluid mb-3" alt="Imagem do Território" style="cursor: zoom-in; transition: transform 0.2s;" />
+    </div>
+    <p><strong>Nome:</strong> @Model.Nome</p>
+    <div><strong>Quadras feitas:</strong><br />
+        @for (int i = 1; i <= Model.QuantidadeQuadras; i++)
+        {
+            var checkedAttr = Model.QuadrasFeitas != null ? Model.QuadrasFeitas.Split(',').Contains(i.ToString()) ? "checked" : "" : "";
+
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" value="@i" id="quadra_@i" @checkedAttr />
+                <label class="form-check-label" for="quadra_@i">@i</label>
+            </div>
+        }
+    </div>
+</div>
+
+@Html.AntiForgeryToken()
+
+<script>
+    const img = document.getElementById('zoomImg');
+    let scale = 1;
+    img.addEventListener('wheel', function(e) {
+        e.preventDefault();
+        if (e.deltaY < 0) {
+            scale += 0.1;
+        } else {
+            scale -= 0.1;
+            if (scale < 1) scale = 1;
+        }
+        img.style.transform = `scale(${scale})`;
+    });
+</script>

@@ -1,0 +1,86 @@
+﻿@page
+@model OrganizarTerritorios.Pages.Usuarios.AdministracaoUsuariosModel
+@{
+}
+
+
+<h2 class="mb-4">Administrar Usuários</h2>
+
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#criarUsuarioModal">
+    Adicionar Usuário
+</button>
+
+<!-- Modal Novo Usuário -->
+<div class="modal fade" id="criarUsuarioModal" tabindex="-1" aria-labelledby="modalNovoUsuarioLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalNovoUsuarioLabel">Adicionar Usuário</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            @await Html.PartialAsync("_Criar", Model)
+        </div>
+    </div>
+</div>
+
+<!-- Modal Editar Usuário -->
+<div class="modal fade" id="editarUsuarioModal" tabindex="-1" aria-labelledby="modalEditarUsuarioLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- O conteúdo será carregado via HTMX -->
+        </div>
+    </div>
+</div>
+
+<hr />
+
+<!-- Modal de Confirmação de Exclusão de Usuário -->
+<div class="modal fade" id="confirmDeleteUsuarioModal" tabindex="-1" aria-labelledby="confirmDeleteUsuarioModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Conteúdo será carregado via HTMX -->
+        </div>
+    </div>
+</div>
+
+<h3 class="mb-3">Lista de Usuários</h3>
+<div class="table-responsive">
+    <table class="table table-striped table-bordered">
+        <thead class="table-light">
+            <tr>
+                <th>Id</th>
+                <th>Email</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var usuario in Model.Usuarios)
+            {
+                <tr>
+                    <td>@usuario.Id</td>
+                    <td>@usuario.Email</td>
+                    <td>
+                        <a class="btn btn-warning btn-sm me-1"
+                           hx-get="@Url.Page("Administracao", "Edit", new { id = usuario.Id })"
+                           hx-target="#editarUsuarioModal .modal-content"
+                           hx-swap="innerHTML"
+                           hx-trigger="click"
+                           data-bs-toggle="modal"
+                           data-bs-target="#editarUsuarioModal">
+                            Editar
+                        </a>
+                        <a class="btn btn-danger btn-sm me-1"
+                           hx-get="@Url.Page("Administracao", "Delete", new { id = usuario.Id })"
+                           hx-target="#confirmDeleteUsuarioModal .modal-content"
+                           hx-swap="innerHTML"
+                           hx-trigger="click"
+                           data-bs-toggle="modal"
+                           data-bs-target="#confirmDeleteUsuarioModal">
+                            Excluir
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
