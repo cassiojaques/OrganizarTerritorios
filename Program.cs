@@ -44,26 +44,26 @@ app.MapStaticAssets();
 app.MapRazorPages()
    .WithStaticAssets();
 
-//SeedDatabase(app);
+SeedDatabase(app);
 
 app.Run();
 
-//void SeedDatabase(WebApplication app)
-//{
-//    using var scope = app.Services.CreateScope();
-//    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+void SeedDatabase(WebApplication app)
+{
+    using var scope = app.Services.CreateScope();
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
-//    db.Database.Migrate(); // garante que o banco existe
+    db.Database.Migrate(); // garante que o banco existe
 
-//    if (!db.Usuarios.Any())
-//    {
-//        var usuario = new Usuario
-//        {
-//            Email = "cassio.jaques@gmail.com",
-//            SenhaHash = BCrypt.Net.BCrypt.HashPassword("vendas123")
-//        };
+    if (!db.Usuarios.Any())
+    {
+        var usuario = new Usuario
+        {
+            Email = "cassio.jaques@gmail.com",
+            SenhaHash = BCrypt.Net.BCrypt.HashPassword("vendas123")
+        };
 
-//        db.Usuarios.Add(usuario);
-//        db.SaveChanges();
-//    }
-//}
+        db.Usuarios.Add(usuario);
+        db.SaveChanges();
+    }
+}
