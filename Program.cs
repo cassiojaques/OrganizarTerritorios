@@ -21,8 +21,8 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 builder.Services.AddAuthorization();
 
 // Configura a porta para o ambiente de produção do Render
-var port = Environment.GetEnvironmentVariable("PORT") ?? "10000";
-builder.WebHost.UseUrls($"http://*:{port}");
+//var port = Environment.GetEnvironmentVariable("PORT") ?? "10000";
+//builder.WebHost.UseUrls($"http://*:{port}");
 
 
 var app = builder.Build();
